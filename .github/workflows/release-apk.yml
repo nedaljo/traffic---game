@@ -1,0 +1,24 @@
+name: Publish APK release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create release and upload APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME" TrafficRush.apk
+          --title "Traffic Rush $GITHUB_REF_NAME"
+          --notes "Android APK including the vehicle movement fix."
